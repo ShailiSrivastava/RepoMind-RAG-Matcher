@@ -2,6 +2,14 @@ import os
 import shutil
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+# Load env variables globally on startup
+load_dotenv()
+parent_dotenv = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(parent_dotenv):
+    load_dotenv(parent_dotenv)
+
 from services.pdf_parser import parse_resume_pdf, CandidateProfile
 from services.job_fetcher import fetch_weworkremotely_jobs
 from services.vector_store import VectorStoreManager

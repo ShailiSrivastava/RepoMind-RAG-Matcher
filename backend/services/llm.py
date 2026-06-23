@@ -3,6 +3,14 @@ import logging
 from google import genai
 from google.genai import types
 from tenacity import retry, stop_after_attempt, wait_exponential, before_sleep_log
+from dotenv import load_dotenv
+
+# Load environment variables. We look for a .env locally first (e.g. backend/.env),
+# then search the parent root folder (e.g. root .env) to load the keys.
+load_dotenv()
+parent_dotenv = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
+if os.path.exists(parent_dotenv):
+    load_dotenv(parent_dotenv)
 
 # 1. SETUP LOGGING
 # We configure logging to output info-level logs to the terminal.

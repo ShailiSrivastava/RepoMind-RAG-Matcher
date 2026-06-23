@@ -6,8 +6,12 @@ from typing import List, Optional # Supports type hinting for complex structures
 from dotenv import load_dotenv # Utility for loading environment variables from a .env file
 
 # 1. LOAD CONFIGURATION
-# Load environment variables from the .env file (primarily for GEMINI_API_KEY).
+# Load environment variables. We look for a .env locally first (e.g. backend/.env),
+# then search the parent root folder (e.g. root .env) to load the keys.
 load_dotenv()
+parent_dotenv = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
+if os.path.exists(parent_dotenv):
+    load_dotenv(parent_dotenv)
 
 # 2. DEFINE CANDIDATE PROFILE SCHEMA (Pydantic)
 # In RAG pipelines, extracting structured details from unstructured inputs (like PDFs) is key.

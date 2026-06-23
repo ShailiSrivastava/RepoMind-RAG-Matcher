@@ -1,7 +1,9 @@
 # Backend files to ignore
+.env
 backend/.env
 backend/.venv/
-backend/__pycache__/
+**/__pycache__/
+*.pyc
 backend/chroma_db/
 backend/temp/
 
