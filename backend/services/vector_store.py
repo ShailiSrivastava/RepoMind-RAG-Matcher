@@ -84,11 +84,15 @@ class VectorStoreManager:
         query_vector = self.model.encode(query_text).tolist()
         
         # 2. Query ChromaDB database.
-        # It calculates the distance between the query_vector and all stored job vectors.
-        # n_results returns the top K most similar job listings.
+        # Ensure we do not request more results than available in the index to prevent ChromaDB errors.
+        total_items = self.collection.count()
+        if total_items == 0:
+            return []
+            
+        n_results = min(limit, total_items)
         results = self.collection.query(
             query_embeddings=[query_vector],
-            n_results=limit
+            n_results=n_results
         )
         
         formatted_results = []
