@@ -5,9 +5,9 @@ import chromadb
 from services.job_fetcher import JobItem
 
 # 1. DEFINE VECTOR DATABASE CACHE PATH
-# We set an absolute path on disk to save ChromaDB's SQLite database.
-# This prevents our data from disappearing when the FastAPI server restarts.
-DB_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db"))
+# We look for a CHROMA_DB_PATH environment variable (crucial for persistent disks in cloud deployment like Render).
+# If not set, we default to the local backend/chroma_db directory.
+DB_PATH = os.getenv("CHROMA_DB_PATH", os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")))
 
 class VectorStoreManager:
     def __init__(self):
